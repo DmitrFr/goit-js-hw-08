@@ -11,13 +11,20 @@ const onInputText = function (evt) {
 
 const onFormSubmit = function (evt) {
   evt.preventDefault();
-  evt.target.reset();
-  localStorage.removeItem(localStorageKeyName);
+  if (
+    formEl.elements.email.value !== '' &&
+    formEl.elements.message.value !== ''
+  ) {
+    console.log(localStorage.getItem(localStorageKeyName));
+    evt.target.reset();
+    localStorage.removeItem(localStorageKeyName);
+  } else {
+    alert('All fields must be filled!');
+  }
 };
 
 const populateInputs = function () {
   const savedMessage = JSON.parse(localStorage.getItem(localStorageKeyName));
-  console.log(savedMessage);
   if (savedMessage) {
     formEl.elements.email.value = savedMessage.email;
     formEl.elements.message.value = savedMessage.message;
@@ -27,6 +34,3 @@ const populateInputs = function () {
 formEl.addEventListener('input', throttle(onInputText, 500));
 formEl.addEventListener('submit', throttle(onFormSubmit, 500));
 populateInputs();
-
-//stringify objektu , a pri perezagruzke sdelat parce
-//pri pustom forma pokazyvaet null
